@@ -21,8 +21,21 @@ class Venue():
     def location(self, cursor):
         query = f"SELECT * FROM locations WHERE venue_id = {self.id}"
         cursor.execute(query)
-        location_record = test_cursor.fetchone()
+        location_record = cursor.fetchone()
         location = src.build_from_record(src.Location, location_record)
 
         return location
+
+    def categories(self, cursor):
+        query = f"""SELECT DISTINCT c.*
+                    FROM venue_categories vc
+                    JOIN categories c
+                    ON vc.category_id = c.id
+                    WHERE vc.venue_id = {self.id}"""
+        cursor.execute(query)
+        category_records = cursor.fetchall()
+        categories = src.build_from_records(
+            src.Category, category_records)
+
+        return categories
 

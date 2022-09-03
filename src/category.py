@@ -29,4 +29,15 @@ class Category:
         return category
 
 
+    def venues(self, cursor):
+        query = f"""SELECT DISTINCT v.*
+                    FROM venue_categories vc
+                    JOIN venues v
+                    ON  vc.venue_id = v.id
+                    WHERE vc.category_id = {self.id}"""
+        cursor.execute(query)
+        venue_records = cursor.fetchall()
+        venues = src.build_from_records(src.Venue, venue_records)
+
+        return venues
 
