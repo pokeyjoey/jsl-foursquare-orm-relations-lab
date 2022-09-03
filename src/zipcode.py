@@ -19,7 +19,7 @@ class Zipcode:
         return city
 
     def locations(self, cursor):
-        query = f"""SELECT * FROM locations l
+        query = f"""SELECT DISTINCT l.* FROM locations l
                     JOIN zipcodes z
                     ON  l.zipcode_id = {self.id}"""
         cursor.execute(query)
