@@ -11,3 +11,19 @@ class City:
             setattr(self, k, v)
 
 
+    def state(self, cursor):
+        query = f"SELECT * FROM states WHERE id = {self.state_id}"
+        cursor.execute(query)
+        state_record = cursor.fetchone()
+        state = build_from_record(State, state_record)
+
+        return state
+
+    def zipcodes(self, cursor):
+        query = f"SELECT DISTINCT zipcodes.* FROM zipcodes WHERE city_id = {self.id}"
+        cursor.execute(query)
+        zipcode_records = cursor.fetchall()
+        zipcodes = build_from_records(Zipcode, zipcode_records)
+
+        return zipcodes
+
